@@ -1,0 +1,19 @@
+<launch>
+	<!-- start  marker_server_node -->
+	<node pkg="image_pose_estimation" name="image_pose_estimation_node" type="image_pose_estimation.py" output="screen">
+		<param name="camera_name" value="/camera" />
+
+		<param name="use_image" value="false" />
+		<param name="image_path" value="$(find image_pose_estimation)/src/save_image.jpg" />
+		<!--the width of the image in meters-->
+		<param name="size_image" value="0.15" />
+
+		<param name="min_match_count" value="10" />
+		<param name="show_image" value="True" />
+
+		<param name="blur_threshold" value="300" />
+		<param name="frame_id" value="object" />
+
+		<param name="rate" value="10" />
+	</node>
+</launch>
