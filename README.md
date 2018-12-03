@@ -9,6 +9,10 @@ Written on Python Opencv with SIFT + Homography + PnP + blue detector.
 ```bash
 roslaunch image_pose_estimation image_pose_estimation.lanch 
 ```
+key *"i"* - select image<br/>
+key *"s"* - save image<br/>
+key *"q"* - exit<br/>
+
 
 #### Subscribed Topics:
 
