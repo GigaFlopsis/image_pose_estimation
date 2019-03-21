@@ -22,7 +22,7 @@ topic_tf_perent = "/base_link"
 
 t = TransformStamped()
 tf2_br = tf2_ros.TransformBroadcaster()
-
+image_proc = None
 
 def image_clb(data):
     """
@@ -69,12 +69,18 @@ def camera_info_clb(data):
     :param data:
     :return:
     """
-    global image_proc
-    for i in range(1,4):
-        for k in range(1,4):
-            image_proc.camera_parameters[0][1] = data.K[(i*k)-1]
+    global image_proc, camera_info_sub
+    if image_proc is None:
+        return
+    t = 0
+    for i in range(3):
+        for k in range(3):
+            image_proc.camera_parameters[i][k] = data.K[i+k]
+            t+=1
     for i in range(5):
         image_proc.camera_distortion_param[i] = data.D[i]
+    camera_info_sub.unregister()
+    print("get camera params")
 
 
 ############
@@ -136,7 +142,7 @@ if __name__ == '__main__':
 
     rate = rospy.Rate(_rate)
     rospy.Subscriber(camera_name+"/image_raw", Image, image_clb)
-    rospy.Subscriber(camera_name+"/camera_info", CameraInfo, camera_info_clb)
+    camera_info_sub = rospy.Subscriber(camera_name+"/camera_info", CameraInfo, camera_info_clb)
 
     while not rospy.is_shutdown():
         if get_image_flag:
